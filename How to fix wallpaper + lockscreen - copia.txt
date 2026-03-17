@@ -1,0 +1,41 @@
+# Hello… To fix the wallpaper and the lockscreen run powershell as admin, then copy paste all of this code there... 
+# then press enter...and restart your PC, and next go to the post and whorship Blaine in the comments <3
+
+
+$policyPathLockScreen = "HKLM:\SOFTWARE\Microsoft\Windows\CurrentVersion\PersonalizationCSP"
+$policyControlPath = "HKLM:\SOFTWARE\Policies\Microsoft\Windows\Control PanelDesktop"
+
+
+Remove-Item -Path $policyPathLockScreen -Recurse -Force -ErrorAction SilentlyContinue
+
+
+Remove-Item -Path $policyControlPath -Recurse -Force -ErrorAction SilentlyContinue
+
+
+Start-Process -FilePath "gpupdate.exe" -ArgumentList "/force" -Wait
+
+Write-Host "Done."
+
+# ----------------------------------------------------------------------------------------------------
+
+
+$wallpaperPath = "C:\Users\Public\Pictures\wallpaper.jpg"
+
+
+Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name Wallpaper -Value ""
+Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name WallpaperStyle -Value 0
+Set-ItemProperty -Path "HKCU:\Control Panel\Desktop" -Name TileWallpaper -Value 0
+
+
+Remove-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System" -Force -ErrorAction SilentlyContinue
+Remove-Item -Path "HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\ActiveDesktop" -Force -ErrorAction SilentlyContinue
+
+
+rundll32.exe user32.dll, UpdatePerUserSystemParameters
+
+
+if (Test-Path $wallpaperPath) {
+    Remove-Item $wallpaperPath -Force
+}
+
+Write-Host "Done."
